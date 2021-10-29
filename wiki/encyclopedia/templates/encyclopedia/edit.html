@@ -1,14 +1,15 @@
 {% extends "encyclopedia/layout.html" %}
 
 {% block title %}
-    {{name}}
+    Edit Page
 {% endblock %}
 
 {% block body %}
-    {{content|safe}}
-    <form method="post" action={{name}}/edit>
+    <h3>Edit content for '{{name}}' page</h3>
+    <form method="post" action="/wiki/{{name}}/confirmedit">
         {% csrf_token %}
-        <input type="submit" value="Edit Content">
+        <textarea name="edited_content">{{entry}}</textarea>
+        <input type="submit" value="Confirm Edit" name="new_content">
     </form>
 
     <ul>

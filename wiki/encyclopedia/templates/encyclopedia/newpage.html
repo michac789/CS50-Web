@@ -5,7 +5,18 @@
 {% endblock %}
 
 {% block body %}
-    Create Page
+    {% if error %}
+    <h3>ERROR! No duplicate titles are allowed, please choose a different title!</h3>
+    {% endif %}
+
+    <form method="post" action="{% url 'newpage' %}">
+        {% csrf_token %}
+        <h3>Enter title:</h3>
+        <input type="text" name="new_title">
+        <h3>Enter content:</h3>
+        <textarea name="new_content"></textarea>
+        <input type="submit" value="Submit">
+    </form>
 
     <ul>
         {% for entry in entries %}

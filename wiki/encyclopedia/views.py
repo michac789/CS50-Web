@@ -6,8 +6,6 @@ import markdown2
 
 from . import util
 
-class SearchForm(forms.Form):
-    search = forms.CharField(label="search")
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
@@ -29,7 +27,22 @@ def random(request):
     return HttpResponseRedirect(f"/wiki/{list[choose]}")
 
 def newpage(request):
-    return render(request, "encyclopedia/newpage.html")
+    error = False
+    if request.method == "POST":
+        title = request.POST['new_title']
+        content = request.POST['new_content']
+        if title in util.list_entries():
+            error = True
+            return render(request, "encyclopedia/newpage.html", {
+                "error": error
+            })
+        else:
+            util.save_entry(title, content)
+            return HttpResponseRedirect(f"/wiki/{title}")
+    else:
+        return render(request, "encyclopedia/newpage.html", {
+            "error": error
+        })
 
 def search(request):
     if request.method == "POST":
@@ -38,16 +51,26 @@ def search(request):
             return HttpResponseRedirect(f"wiki/{input}")
         else:
             list_of_search_result = []
+            resultshown = False
             for pagename in util.list_entries():
                 if input.upper() in pagename.upper():
                     list_of_search_result.append(pagename)
+                    resultshown = True
             return render(request, "encyclopedia/search.html", {
-                "searchkey": list_of_search_result
+                "searchresults": list_of_search_result,
+                "resultshown": resultshown
             })
     else:
         return render(request, "encyclopedia/index.html")
-    #list = util.list_entries()
-    #for page in list:
-    #    if list[page] == input:
-    #       return HttpResponseRedirect(f"/wiki/{list[page]}")
-    
+
+def edit(request, name):
+    entry = util.get_entry(name)
+    return render(request, "encyclopedia/edit.html", {
+        "name": name,
+        "entry": entry
+    })
+
+def confirmedit(request, name):
+    content = request.POST['edited_content']
+    util.save_entry(name, content)
+    return HttpResponseRedirect(f"/wiki/{name}")
