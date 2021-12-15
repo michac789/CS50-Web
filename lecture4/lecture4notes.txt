@@ -1,0 +1,58 @@
+--- SQL, Models, and Migrations ---
+
+++ SQL ++
+SQLite general types: text, numeric, integer, real, blob
+Other types: CHAR(size), VARCHAR(size), SMALLINT, INT, BIGINT, FLOAT, DOUBLE, etc
+Create table:
+> CREATE TABLE <tablename> ( *comma-seperated list
+    <columnname> <types> <additional constraint>)
+Type of constraints: DEFAULT, NOT NULL, UNIQUE, PRIMARY KEY, CHECK
+Add Data: INSERT INTO <tablename> <c1,c2,..> VALUES <v1,v2,..>
+Get Data: SELECT <c1,c2,..> FROM <tablename> WHERE <condition> ORDER BY <order>
+*Display nicely: .mode columns; .headers yes
+Update Data: UPDATE <tablename> SET <c1>=<v1>,.. WHERE <predicate>
+Delete Data: UPDATE <tablename> WHERE <predicate>
+*Other clauses: LIMIT, ORDER BY, GROUP BY, HAVING
+*Foreign keys
+*CREATE INDEX name_index ON passangers(last)
+*SQL Injection Attack
+
+++ Migrations ++
+- models.py; create class
+> python manage.py makemigrations: new migration file created
+> python manage.py migrate: apply to database
+> python manage.py shell: python command that gets executed
+- On shell:
+> from flights.models import Flight
+> f = Flight(__, __, __)
+> f.save()
+> *ex: airport.object.filter(..), flight.destination(), etc
+> Flight.objects.all(): select all
+> flights = Flight.objects.all()
+> flight = flights.first()
+> flight.id; flight; flight.delete(); etc..
+- In flight class: >def __str__(self):
+>    return f"{..}, {..},.."
+> models.ForeignKey(..., ..., on_delete="--".related_name="--")
+* models.Cascade: also delete corresponding table
+> models.CharField(max_length="--")
+> models.ManyToManyField(..)
+> Airports.objects.filter(city="New York")
+
+++ Django Admin ++
+- inside admin.py,
+> from .models import ..
+> admin.site.register(..)
+> python manage.py createsuperuser
+to manipulate underlying database
+- many-to-many relationships
+- users
+
+++ Authentication ++
+- create new app called 'users'
+- 3 path: "", "login", "logout"
+> def index(request):
+>    if not request.user.is_authenticated:
+>       return HttpResponseRedirect(reverse("login"))
+- login render user/login.html, create new form with post method
+> from django.contrib.auth import authenticate, login, logout
