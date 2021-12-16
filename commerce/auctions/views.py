@@ -77,3 +77,10 @@ def createlisting_view(request):
         return render(request, "auctions/createlisting.html", {
             "categories": Categories.objects.all()
         })
+
+
+def auction(request, auction_id):
+    auction = Auction.objects.get(id=auction_id)
+    return render(request, "auctions/listingpage.html", {
+        "auction": auction
+    })

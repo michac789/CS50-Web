@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>{{auction.title}}</h2>
+
+    <a href="{% url 'index' %}">Back To Homepage</a>
+    <ul>
+        <li>Description: {{auction.description}}</li>
+        <li>Created By: {{auction.user.name}}TODO</li>
+        <li>Category: {{auction.category}}</li>
+        <li>Starting Bid: {{auction.starting_bid}}</li>
+        <li>Image Link: {{auction.image_link}}</li>
+    </ul>
+
+
+{% endblock %}
