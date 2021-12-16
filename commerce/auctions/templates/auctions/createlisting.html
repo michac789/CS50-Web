@@ -3,11 +3,20 @@
 {% block body %}
     <h2>Active Listings</h2>
 
+    {% for category in categories %}
+        {{category}}
+    {% endfor %}
+
     <form action="{% url 'createlisting' %}" method="post">
         {% csrf_token %}
         <input type="text" name="title" placeholder="Title">
         <input type="text" name="description" placeholder="Description">
         <input type="text" name="starting_bid" placeholder="Starting Bid">
+        <select name="category">
+            {% for category in categories %}
+                <option value="{{category.id}}"> {{category}} </option>
+            {% endfor %}
+        </select>
         <input type="submit">
     </form>
 {% endblock %}
