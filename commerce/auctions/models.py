@@ -19,10 +19,11 @@ class Auction(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
     category = models.CharField(max_length=32, choices=categories)
-    owner = models.ManyToManyField(User)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    starting_bid = models.IntegerField(max_length=32)
     
     def __str__(self):
-        return f"{self.title} ({self.category}): {self.description}"
+        return f"({self.id}). {self.title} ({self.category}): {self.description}"
 
 class Bid(models.Model):
     price = models.IntegerField(max_length=32)
