@@ -67,8 +67,9 @@ def createlisting_view(request):
         title = request.POST["title"]
         description = request.POST["description"]
         starting_bid = request.POST["starting_bid"]
-        category1 = Categories.objects.get(pk=int(request.POST["category"]))
-        Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category1)
+        category = Categories.objects.get(pk=int(request.POST["category"]))
+        image_link = request.POST['image_link']
+        Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category, image_link=image_link)
         return render(request, "auctions/createlisting.html")
     else:
         return render(request, "auctions/createlisting.html", {
