@@ -66,17 +66,41 @@ def register(request):
 
 
 def createlisting_view(request):
+    empty0, empty1, empty2 = False, False, False
     if request.method == "POST":
         title = request.POST["title"]
         description = request.POST["description"]
         starting_bid = request.POST["starting_bid"]
         category = Categories.objects.get(pk=int(request.POST["category"]))
         image_link = request.POST['image_link']
-        Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category, image_link=image_link)
-        return render(request, "auctions/createlisting.html")
+        if title == "":
+            empty0 = True
+        if description == "":
+            empty1 = True
+        try:
+            starting_bid = float(starting_bid)
+        except ValueError:
+            empty2 = True
+        else:
+            empty2 = False
+        created = False
+        if empty0 == False and empty1 == False and empty2 == False:
+            created = True
+            Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category, image_link=image_link)
+        return render(request, "auctions/createlisting.html", {
+            "categories": Categories.objects.all(),
+            "created": created,
+            "empty0": empty0,
+            "empty1": empty1,
+            "empty2": empty2
+        })
     else:
         return render(request, "auctions/createlisting.html", {
-            "categories": Categories.objects.all()
+            "categories": Categories.objects.all(),
+            "created": False,
+            "empty0": empty0,
+            "empty1": empty1,
+            "empty2": empty2
         })
 
 

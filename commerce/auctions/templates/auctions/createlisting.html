@@ -5,18 +5,36 @@
 
     <form action="{% url 'createlisting' %}" method="post">
         {% csrf_token %}
-        <ul>
-            <li><pre>Auctioneer   : <b>{{user.username}}</b> (based on your username)</pre></li>
-            <li><pre>Title        : <input type="text" name="title" placeholder="Name of item" maxlength=64 size=64></li></pre>
-            <li><pre>Description  : <textarea name="description" placeholder="Describe your item" maxlength="256" rows=4 cols=80></textarea></li></pre>
-            <li><pre>Starting Bid : <input type="text" name="starting_bid" placeholder="Enter starting bid" maxlength=32 size=64></li></pre>
-            <li><pre>Image Link   : <input type="text" name="image_link" placeholder="(Optional)" maxlength=128 size=64></li></pre>
-            <li><pre>Categories   : <select name="category">
-                    {% for category in categories %}
-                        <option value="{{category.id}}"> {{category.name}} </option>
-                    {% endfor %}
-                </select></pre></li>
-        </ul>
-        <input type="submit">
+        {% if created %}
+            New listing successfully created!<br>
+            <a href="{% url 'createlisting' %}">Click here to create another listing</a><br>
+            <a href="{% url 'index' %}">Click here to see all listings</a>
+        {% else %}
+            <ul>
+                {% if empty0 or empty1 or empty2 %}
+                    Warning!!! Auction NOT created!<br>
+                {% endif %}
+                {% if empty0 %}
+                    Please enter a title!<br>
+                {% endif %}
+                {% if empty1 %}
+                    Please enter a description!<br>
+                {% endif %}
+                {% if empty2 %}
+                    Please enter a valid starting bid!<br>
+                {% endif %}
+                <li><pre>Auctioneer   : <strong>{{user.username}}</strong> (based on your username)</pre></li>
+                <li><pre>Title        : <input type="text" name="title" placeholder="Name of item" maxlength=64 size=64></li></pre>
+                <li><pre>Description  : <textarea name="description" placeholder="Describe your item" maxlength="256" rows=4 cols=80></textarea></li></pre>
+                <li><pre>Starting Bid : <b>$</b><input type="text" name="starting_bid" placeholder="Enter starting bid" maxlength=32 size=63></li></pre>
+                <li><pre>Image Link   : <input type="text" name="image_link" placeholder="(Optional)" maxlength=128 size=64></li></pre>
+                <li><pre>Categories   : <select name="category">
+                        {% for category in categories %}
+                            <option value="{{category.id}}"> {{category.name}} </option>
+                        {% endfor %}
+                    </select></pre></li>
+            </ul>
+            <input type="submit">
+        {% endif %}
     </form>
 {% endblock %}
