@@ -15,7 +15,7 @@ class Auction(models.Model):
     title = models.CharField(max_length=64)
     description = models.CharField(max_length=256)
     category = models.ForeignKey(Categories, on_delete=models.CASCADE)
-    owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name="actioneer")
     starting_bid = models.FloatField(max_length=32)
     image_link = models.CharField(max_length=128, default=None)
     

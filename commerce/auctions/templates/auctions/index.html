@@ -10,7 +10,13 @@
             <li>Category: {{auction.category.name}}</li>
             <li>Description: {{auction.description}}</li>
             <li>Starting Bid: {{auction.starting_bid}}</li>
-            <li>Image Link: {{auction.image_link}}</li>
+            <li>
+            {% if auction.image_link == "" %}
+                No image to be displayed!
+            {% else %}
+                <img src="{{auction.image_link}}" alt="(error image link!)">
+            {% endif %}
+            </li>
         </ul>
         {% endfor %}
     </ol>
