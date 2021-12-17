@@ -64,6 +64,7 @@ def register(request):
     else:
         return render(request, "auctions/register.html")
 
+
 def createlisting_view(request):
     if request.method == "POST":
         title = request.POST["title"]
@@ -83,4 +84,22 @@ def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
     return render(request, "auctions/listingpage.html", {
         "auction": auction
+    })
+
+
+def display_categories(request):
+    return render(request, "auctions/categories.html", {
+        "categories": Categories.objects.all()
+    })
+    
+    
+def view_category(request, category):
+    return render(request, "auctions/specific_category.html", {
+        
+    })
+
+
+def watchlist(request):
+    return render(request, "auctions/watchlist.html", {
+        
     })
