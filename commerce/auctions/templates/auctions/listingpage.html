@@ -17,6 +17,23 @@
 
     {% endif %}
 
+    {% if watchlist %}
+        Yes, it is on the watchlist.
+        <form action="{% url 'auction' auction.id %}" method="post">
+            {% csrf_token %}
+            <button name="watchlist" value="-watchlist">Remove From Watchlist</button>
+        </form>
+    {% else %}
+        No, it is not on the watchlist.
+        <form action="{% url 'auction' auction.id %}" method="post">
+            {% csrf_token %}
+            <button name="watchlist" value="+watchlist">Add To Watchlist</button>
+        </form>
+    {% endif %}
+    
+
+    
+    <br>
     Add to watchlist or remove it TODO
     Bid an item TODO
     Close auction (if owner of the auction)

@@ -106,9 +106,27 @@ def createlisting_view(request):
 
 def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
-    return render(request, "auctions/listingpage.html", {
-        "auction": auction
-    })
+    user = User.objects.get(username=request.user)
+    watchlist = False
+    if user in auction.watchlist.all():
+        watchlist = True
+    if request.method == "POST":
+        x = request.POST["watchlist"]
+        if x[0] == '+':
+            auction.watchlist.add(user)
+            watchlist = True
+        else:
+            auction.watchlist.remove(user)
+            watchlist = False
+        return render(request, "auctions/listingpage.html", {
+            "auction": auction,
+            "watchlist": watchlist
+        })
+    else:
+        return render(request, "auctions/listingpage.html", {
+            "auction": auction,
+            "watchlist": watchlist
+        })
 
 
 def display_categories(request):
