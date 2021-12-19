@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.db.models.deletion import CASCADE
 
 
 class User(AbstractUser):
@@ -29,7 +30,7 @@ class Bid(models.Model):
     bidder = models.ForeignKey(User, on_delete=models.CASCADE, related_name="person")
     
     def __str__(self):
-        return f"{self.bidder}: {self.item}, {self.price}"
+        return f"{self.bidder.username}: {self.price}"
 
 class Comment(models.Model):
     comment = models.CharField(max_length=256)

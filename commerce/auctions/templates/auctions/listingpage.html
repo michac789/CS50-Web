@@ -3,19 +3,23 @@
 {% block body %}
     <h3>Listing: {{auction.title}}</h3>
 
-    {% if watchlist %}
-        This item is already on your watchlist.
-        <form action="{% url 'auction' auction.id %}" method="post">
-            {% csrf_token %}
-            <button name="watchlist" value="-watchlist">Remove From Watchlist</button>
-        </form>
+    {% if user.is_authenticated %}
+        {% if watchlist %}
+            This item is already on your watchlist.
+            <form action="{% url 'auction' auction.id %}" method="post">
+                {% csrf_token %}
+                <button name="watchlist" value="-watchlist">Remove From Watchlist</button>
+            </form>
+        {% else %}
+            This item is NOT on your watchlist yet.
+            <form action="{% url 'auction' auction.id %}" method="post">
+                {% csrf_token %}
+                <button name="watchlist" value="+watchlist">Add To Watchlist</button>
+            </form>
+        {% endif %}<br>
     {% else %}
-        This item is NOT on your watchlist yet.
-        <form action="{% url 'auction' auction.id %}" method="post">
-            {% csrf_token %}
-            <button name="watchlist" value="+watchlist">Add To Watchlist</button>
-        </form>
-    {% endif %}<br>
+        Please login to add items to your watchlist!
+    {% endif %}
 
     <h5>Item description: </h5>
     <h6>{{auction.description}}</h6>
@@ -25,26 +29,30 @@
     {% if auction.image_link == "" %}
         No image to be displayed!
     {% else %}
-        <img src="{{auction.image_link}}" alt="(error image link!)">
-    {% endif %}
-
-    {% if user.is_authenticated %}
-
+        <img src="{{auction.image_link}}" alt="(error image link!)"><br>
     {% endif %}
     
-    <form action="{% url 'auction' auction.id %}" method="Post">
-        {% csrf_token %}
-        <input type="text" placeholder="Enter bid here: " name="bid" maxlength=32 size=32>
-        <button type="submit">Place Bid</button>
-    </form>
+    {% if user.is_authenticated %}
+        <form action="{% url 'auction' auction.id %}" method="Post">
+            {% csrf_token %}
+            <input type="text" placeholder="Enter bid here: " name="bid" maxlength=32 size=32>
+            <button type="submit">Place Bid</button>
+        </form>
+
+        {% for bid in bids %}
+            {{bid}}
+        {% endfor %}
+
+        <!--TODO (CLOSE AUCTION IF OWNER)-->
+    {% else %}
+        Please login to place bids.<br>
+        If you are the owner of the listing, please login to close the auction.
+    {% endif %}
     
 
     
     <br>
-    
-    Bid an item TODO
-    Close auction (if owner of the auction)
-    Inform if win auction
-    Add comments
+    <!--TODO: Inform if win auction-->
+    <!--TODO: Add comments-->
 
 {% endblock %}

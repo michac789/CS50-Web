@@ -1,3 +1,4 @@
+from typing import ItemsView
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
@@ -106,41 +107,54 @@ def createlisting_view(request):
 
 def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
-    user = User.objects.get(username=request.user)
-    watchlist = False
-    if user in auction.watchlist.all():
-        watchlist = True
-    if request.method == "POST":
-        # Handles add/remove from watchlist
-        if request.POST.get('watchlist', False):
-            x = request.POST["watchlist"]
-            if x[0] == '+':
-                auction.watchlist.add(user)
-                watchlist = True
-            else:
-                auction.watchlist.remove(user)
-                watchlist = False
+    
+    if request.user.is_authenticated:
+        user = User.objects.get(username=request.user)
+        bids = Bid.objects.filter(item=auction)
+        watchlist = False
+        error = False
+        if user in auction.watchlist.all():
+            watchlist = True
+        if request.method == "POST":
+            # Handles add/remove from watchlist
+            if request.POST.get('watchlist', False):
+                x = request.POST["watchlist"]
+                if x[0] == '+':
+                    auction.watchlist.add(user)
+                    watchlist = True
+                else:
+                    auction.watchlist.remove(user)
+                    watchlist = False
+                return render(request, "auctions/listingpage.html", {
+                    "error": error,
+                    "auction": auction,
+                    "watchlist": watchlist,
+                    "bids": bids
+                })
+            # Handles bidding process
+            elif request.POST.get('bid', False):
+                bidding = request.POST["bid"]
+                if float(bidding) <= auction.starting_bid:
+                    error = True
+                Bid.objects.create(price=bidding, item=auction, bidder=request.user)
+
+
+                return render(request, "auctions/listingpage.html", {
+                    "error": error,
+                    "auction": auction,
+                    "watchlist": watchlist,
+                    "bids": bids
+                })
+        else:
             return render(request, "auctions/listingpage.html", {
+                "error": error,
                 "auction": auction,
-                "watchlist": watchlist
+                "watchlist": watchlist,
+                "bids": bids
             })
-        # Handles bidding process
-        elif request.POST.get('bid', False):
-            bidding = request.POST["bid"]
-            if bidding <= auction.starting_bid:
-                pass
-        
-        #
-        
-        #
-        return render(request, "auctions/listingpage.html", {
-            "auction": auction,
-            "watchlist": watchlist
-        })
     else:
         return render(request, "auctions/listingpage.html", {
-            "auction": auction,
-            "watchlist": watchlist
+            "auction": auction
         })
 
 
