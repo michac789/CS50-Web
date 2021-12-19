@@ -111,13 +111,28 @@ def auction(request, auction_id):
     if user in auction.watchlist.all():
         watchlist = True
     if request.method == "POST":
-        x = request.POST["watchlist"]
-        if x[0] == '+':
-            auction.watchlist.add(user)
-            watchlist = True
-        else:
-            auction.watchlist.remove(user)
-            watchlist = False
+        # Handles add/remove from watchlist
+        if request.POST.get('watchlist', False):
+            x = request.POST["watchlist"]
+            if x[0] == '+':
+                auction.watchlist.add(user)
+                watchlist = True
+            else:
+                auction.watchlist.remove(user)
+                watchlist = False
+            return render(request, "auctions/listingpage.html", {
+                "auction": auction,
+                "watchlist": watchlist
+            })
+        # Handles bidding process
+        elif request.POST.get('bid', False):
+            bidding = request.POST["bid"]
+            if bidding <= auction.starting_bid:
+                pass
+        
+        #
+        
+        #
         return render(request, "auctions/listingpage.html", {
             "auction": auction,
             "watchlist": watchlist
@@ -142,6 +157,7 @@ def view_category(request, category):
 
 
 def watchlist(request):
+    user = User.objects.get(username=request.user)
     return render(request, "auctions/watchlist.html", {
-        
+        "watchlist_auctions": Auction.objects.filter(watchlist=user)
     })

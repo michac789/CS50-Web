@@ -1,10 +1,25 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <a href="{% url 'index' %}">Back To Homepage</a><br><br>
-    <h3>{{auction.title}}</h3>
-    <h5>{{auction.description}}</h5>
-    Created By: {{auction.owner}} <br>
+    <h3>Listing: {{auction.title}}</h3>
+
+    {% if watchlist %}
+        This item is already on your watchlist.
+        <form action="{% url 'auction' auction.id %}" method="post">
+            {% csrf_token %}
+            <button name="watchlist" value="-watchlist">Remove From Watchlist</button>
+        </form>
+    {% else %}
+        This item is NOT on your watchlist yet.
+        <form action="{% url 'auction' auction.id %}" method="post">
+            {% csrf_token %}
+            <button name="watchlist" value="+watchlist">Add To Watchlist</button>
+        </form>
+    {% endif %}<br>
+
+    <h5>Item description: </h5>
+    <h6>{{auction.description}}</h6>
+    Listed By: {{auction.owner}} <br>
     Category: {{auction.category.name}} <br>
     Starting Bid: ${{auction.starting_bid}} <br>
     {% if auction.image_link == "" %}
@@ -16,25 +31,17 @@
     {% if user.is_authenticated %}
 
     {% endif %}
-
-    {% if watchlist %}
-        Yes, it is on the watchlist.
-        <form action="{% url 'auction' auction.id %}" method="post">
-            {% csrf_token %}
-            <button name="watchlist" value="-watchlist">Remove From Watchlist</button>
-        </form>
-    {% else %}
-        No, it is not on the watchlist.
-        <form action="{% url 'auction' auction.id %}" method="post">
-            {% csrf_token %}
-            <button name="watchlist" value="+watchlist">Add To Watchlist</button>
-        </form>
-    {% endif %}
+    
+    <form action="{% url 'auction' auction.id %}" method="Post">
+        {% csrf_token %}
+        <input type="text" placeholder="Enter bid here: " name="bid" maxlength=32 size=32>
+        <button type="submit">Place Bid</button>
+    </form>
     
 
     
     <br>
-    Add to watchlist or remove it TODO
+    
     Bid an item TODO
     Close auction (if owner of the auction)
     Inform if win auction
