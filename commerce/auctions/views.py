@@ -107,12 +107,10 @@ def createlisting_view(request):
 
 def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
-    
+    bids = Bid.objects.filter(item=auction)
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user)
-        bids = Bid.objects.filter(item=auction)
-        watchlist = False
-        error = False
+        watchlist, error, added = False, False, False
         if user in auction.watchlist.all():
             watchlist = True
         if request.method == "POST":
@@ -126,6 +124,7 @@ def auction(request, auction_id):
                     auction.watchlist.remove(user)
                     watchlist = False
                 return render(request, "auctions/listingpage.html", {
+                    "added": added,
                     "error": error,
                     "auction": auction,
                     "watchlist": watchlist,
@@ -134,19 +133,30 @@ def auction(request, auction_id):
             # Handles bidding process
             elif request.POST.get('bid', False):
                 bidding = request.POST["bid"]
-                if float(bidding) <= auction.starting_bid:
+                try:
+                    bidding = float(bidding)
+                except ValueError:
                     error = True
-                Bid.objects.create(price=bidding, item=auction, bidder=request.user)
-
-
+                if not error:
+                    if float(bidding) <= auction.starting_bid:
+                        error = True
+                    for bid in bids:
+                        if float(bidding) <= bid.price:
+                            error = True
+                    if error == False:
+                        Bid.objects.create(price=bidding, item=auction, bidder=request.user)
+                        added = True
                 return render(request, "auctions/listingpage.html", {
+                    "added": added,
                     "error": error,
                     "auction": auction,
                     "watchlist": watchlist,
                     "bids": bids
                 })
+            # TODO - Handles Comments
         else:
             return render(request, "auctions/listingpage.html", {
+                "added": added,
                 "error": error,
                 "auction": auction,
                 "watchlist": watchlist,

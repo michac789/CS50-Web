@@ -33,6 +33,13 @@
     {% endif %}
     
     {% if user.is_authenticated %}
+        {% if error %}
+            <h6>Error! Bid is not added!<br>
+            Please enter a valid bid lower than the current highest bid!</h6>
+        {% endif %}
+        {% if added %}
+            <h6>Bid is added successfully!</h6>
+        {% endif %}
         <form action="{% url 'auction' auction.id %}" method="Post">
             {% csrf_token %}
             <input type="text" placeholder="Enter bid here: " name="bid" maxlength=32 size=32>
