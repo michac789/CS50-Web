@@ -108,6 +108,10 @@ def createlisting_view(request):
 def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
     bids = Bid.objects.filter(item=auction)
+    highest_bid = auction.starting_bid
+    for bid in bids:
+        if bid.price > highest_bid:
+            highest_bid = bid.price
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user)
         watchlist, error, added = False, False, False
@@ -128,7 +132,8 @@ def auction(request, auction_id):
                     "error": error,
                     "auction": auction,
                     "watchlist": watchlist,
-                    "bids": bids
+                    "bids": bids,
+                    "highest_bid": highest_bid
                 })
             # Handles bidding process
             elif request.POST.get('bid', False):
@@ -146,12 +151,18 @@ def auction(request, auction_id):
                     if error == False:
                         Bid.objects.create(price=bidding, item=auction, bidder=request.user)
                         added = True
+                        bids = Bid.objects.filter(item=auction)
+                        highest_bid = auction.starting_bid
+                        for bid in bids:
+                            if bid.price > highest_bid:
+                                highest_bid = bid.price
                 return render(request, "auctions/listingpage.html", {
                     "added": added,
                     "error": error,
                     "auction": auction,
                     "watchlist": watchlist,
-                    "bids": bids
+                    "bids": bids,
+                    "highest_bid": highest_bid
                 })
             # TODO - Handles Comments
         else:
@@ -160,7 +171,8 @@ def auction(request, auction_id):
                 "error": error,
                 "auction": auction,
                 "watchlist": watchlist,
-                "bids": bids
+                "bids": bids,
+                "highest_bid": highest_bid
             })
     else:
         return render(request, "auctions/listingpage.html", {

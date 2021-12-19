@@ -25,24 +25,25 @@
     <h6>{{auction.description}}</h6>
     Listed By: {{auction.owner}} <br>
     Category: {{auction.category.name}} <br>
-    Starting Bid: ${{auction.starting_bid}} <br>
     {% if auction.image_link == "" %}
         No image to be displayed!
     {% else %}
         <img src="{{auction.image_link}}" alt="(error image link!)"><br>
     {% endif %}
+    Starting Bid: ${{auction.starting_bid}} <br>
+    Current Highest Bid: ${{highest_bid}} <br>
     
     {% if user.is_authenticated %}
         {% if error %}
             <h6>Error! Bid is not added!<br>
-            Please enter a valid bid lower than the current highest bid!</h6>
+            Please enter a valid bid higher than the current highest bid!</h6>
         {% endif %}
         {% if added %}
-            <h6>Bid is added successfully!</h6>
+            <h6>Bid added successfully!</h6>
         {% endif %}
         <form action="{% url 'auction' auction.id %}" method="Post">
             {% csrf_token %}
-            <input type="text" placeholder="Enter bid here: " name="bid" maxlength=32 size=32>
+            <input type="text" placeholder="Enter bid here" name="bid" maxlength=32 size=32>
             <button type="submit">Place Bid</button>
         </form>
 
