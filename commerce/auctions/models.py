@@ -20,6 +20,8 @@ class Auction(models.Model):
     starting_bid = models.FloatField(max_length=32)
     image_link = models.CharField(max_length=128, default=None)
     watchlist = models.ManyToManyField(User)
+    closed = models.BooleanField(default = False)
+    winner = models.CharField(max_length=64, default=None)
     
     def __str__(self):
         return f"{self.id}. {self.owner}: {self.title} ({self.category}), starting bid: {self.starting_bid}"
