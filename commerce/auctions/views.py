@@ -88,26 +88,21 @@ def createlisting_view(request):
         if empty0 == False and empty1 == False and empty2 == False:
             created = True
             Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category, image_link=image_link, winner="")
-        return render(request, "auctions/createlisting.html", {
-            "categories": Categories.objects.all(),
-            "created": created,
-            "empty0": empty0,
-            "empty1": empty1,
-            "empty2": empty2
-        })
     else:
-        return render(request, "auctions/createlisting.html", {
-            "categories": Categories.objects.all(),
-            "created": False,
-            "empty0": empty0,
-            "empty1": empty1,
-            "empty2": empty2
-        })
+        created = False
+    return render(request, "auctions/createlisting.html", {
+        "categories": Categories.objects.all(),
+        "created": created,
+        "empty0": empty0,
+        "empty1": empty1,
+        "empty2": empty2
+    })
 
 
 def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
     bids = Bid.objects.filter(item=auction)
+    comments = Comment.objects.filter(item=auction)
     highest_bid = auction.starting_bid
     highest_bidder = None
     total_bids = 0
@@ -164,7 +159,10 @@ def auction(request, auction_id):
                 auction.save(update_fields=['closed'])
                 auction.winner = highest_bidder
                 auction.save(update_fields=['winner'])
-            # TODO - Handles Comments
+            # Handles comments
+            elif request.POST.get('comment', False):
+                text = request.POST["comment"]
+                Comment.objects.create(comment = text, name=request.user, item=auction)
         return render(request, "auctions/listingpage.html", {
             "added": added,
             "error": error,
@@ -173,11 +171,13 @@ def auction(request, auction_id):
             "bids": bids,
             "highest_bid": highest_bid,
             "your_latest_bid": your_latest_bid,
-            "total_bids": total_bids
+            "total_bids": total_bids,
+            "comments": comments
         })
     else:
         return render(request, "auctions/listingpage.html", {
-            "auction": auction
+            "auction": auction,
+            "comments": comments
         })
 
 

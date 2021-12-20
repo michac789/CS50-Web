@@ -84,10 +84,22 @@
     {% else %}
         Please login to place bids.<br>
         If you are the owner of the listing, please login to close the auction.
-    {% endif %}
+    {% endif %}<br><br>
 
-    <!--TODO: Add comments-->
-    <br>
-    
+    <!--Add & display comments-->
+    {% if user.is_authenticated %}
+        <h5>Comments:</h5>
+        <form action="{% url 'auction' auction.id %}" method="post">
+            {% csrf_token %}
+            <textarea name="comment" placeholder="Enter your comment here" maxlength="256" rows=2 cols=80></textarea><br>
+            <button type="submit">Add comment</button>
+        </form>
+    {% else %}
+        Please login to add some comments. <br>
+    {% endif %}
+    {% for comment in comments %}
+        <u>Comment by: {{comment.name.username}}</u><br>
+        {{comment.comment}}<br><br>
+    {% endfor %}
 
 {% endblock %}
