@@ -3,6 +3,7 @@
 {% block body %}
     <h3>Listing: {{auction.title}}</h3>
 
+    <!--Add watchlist feature-->
     {% if user.is_authenticated %}
         {% if watchlist %}
             This item is already on your watchlist.
@@ -21,6 +22,7 @@
         Please login to add items to your watchlist!
     {% endif %}
 
+    <!--Display item details-->
     <h5>Item description: </h5>
     <h6>{{auction.description}}</h6>
     {% if auction.owner == user %}
@@ -28,7 +30,6 @@
     {% else %}
         Listed By: {{auction.owner}} <br>
     {% endif %}
-    
     Category: {{auction.category.name}} <br>
     {% if auction.image_link == "" %}
         No image to be displayed!
@@ -38,7 +39,20 @@
     Starting Bid: ${{auction.starting_bid}} <br>
     Current Highest Bid: ${{highest_bid}} (from a total of {{total_bids}} bid(s) so far)<br>
     
+    <!--Bid item / close bid / display winner-->
     {% if user.is_authenticated %}
+        {% if auction.closed == True %}
+            This auction has been closed.
+            {% if highest_bid != 0 %}
+                {% if auction.winner == user.username %}
+                    Congratulations! You have won the bid!
+                {% else %}
+                    The highest bid is <strong>${{highest_bid}}</strong>, won by <strong>{{auction.winner}}</strong>.
+                {% endif %}
+            {% else %}
+                The bid has been closed. No one won the bid.
+            {% endif %}
+        {% endif %}
         {% if auction.owner == user %}
             {% if auction.closed == False %}
                 Your listing is currently active. <br>
@@ -47,18 +61,19 @@
                     <button name="close_bid" value="close_bid">Close Bid</button>
                 </form>
             {% else %}
-                Your listing has been closed.
-                {% if highest_bid != 0 %}
-                    The highest bid is ${{highest.bid}}, won by {{auction.winner}}
-                {% else %}
-                    The bid has been closed. No one won the bid.
-                {% endif %}
+                You have closed your listing.
             {% endif %}
-        {% else %}
+        {% elif auction.closed == False %}
             {% if your_latest_bid == 0 %}
                 You have not bid this item yet.
             {% else %}
                 Your Latest Bid: ${{your_latest_bid}} <br>
+            {% endif %}
+            {% if error %}
+                Invalid bid! Please enter a valid bid higher than the current bid!
+            {% endif %}
+            {% if added %}
+                Bid added succesfully!
             {% endif %}
             <form action="{% url 'auction' auction.id %}" method="Post">
                 {% csrf_token %}
@@ -66,17 +81,13 @@
                 <button type="submit">Place Bid</button>
             </form>
         {% endif %}
-        {% for bid in bids %}
-            {{bid}}
-        {% endfor %}
     {% else %}
         Please login to place bids.<br>
         If you are the owner of the listing, please login to close the auction.
     {% endif %}
 
-    
-    <br>
-    <!--TODO: Inform if win auction-->
     <!--TODO: Add comments-->
+    <br>
+    
 
 {% endblock %}

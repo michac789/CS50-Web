@@ -109,11 +109,13 @@ def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
     bids = Bid.objects.filter(item=auction)
     highest_bid = auction.starting_bid
+    highest_bidder = None
     total_bids = 0
     for bid in bids:
         total_bids += 1
         if bid.price > highest_bid:
             highest_bid = bid.price
+            highest_bidder = bid.bidder.username
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user)
         user_bids = Bid.objects.filter(bidder=user, item=auction)
@@ -155,9 +157,13 @@ def auction(request, auction_id):
                         for bid in bids:
                             if bid.price > highest_bid:
                                 highest_bid = bid.price
+                                your_latest_bid = bid.price
             # Handles closing bid
             elif request.POST.get('close_bid', False):
                 auction.closed = True
+                auction.save(update_fields=['closed'])
+                auction.winner = highest_bidder
+                auction.save(update_fields=['winner'])
             # TODO - Handles Comments
         return render(request, "auctions/listingpage.html", {
             "added": added,
