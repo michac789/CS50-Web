@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import User, Categories, Auction, Bid, Comment
 
@@ -193,6 +194,7 @@ def view_category(request, category):
     })
 
 
+@login_required
 def watchlist(request):
     user = User.objects.get(username=request.user)
     return render(request, "auctions/watchlist.html", {
