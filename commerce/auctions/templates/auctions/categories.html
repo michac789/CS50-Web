@@ -1,10 +1,40 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Categories</h2>
+    <h3>Categories Search</h3>
 
-    {% for category in categories %}
-        <a href="{% url 'viewcategory' category.name %}">{{category}}</a>
-    {% endfor %}
+    Click to search for respective categories:<br>
+    <form action="{% url 'categories' %}" method="post">
+    {% csrf_token %}
+        {% for category in categories %}
+            <button name="chosen_category" value="{{category.name}}">{{category.name}}</button>
+        {% endfor %}
+    </form><br>
+
+    {% if result != -1 %}
+        <h5>Displaying {{result}} search result(s) for '{{chosen_category.name}}' category.</h5><br>
+    {% endif %}
+    
+    {% if result != 0 %}
+        <ol>
+            {% for auction in relevant_auctions %}
+                <a href="{% url 'auction' auction.id %}"><li>{{auction.title}}</li></a>
+                <ul>
+                    <li>Category: {{auction.category.name}}</li>
+                    <li>Description: {{auction.description}}</li>
+                    <li>Starting Bid: {{auction.starting_bid}}</li>
+                    <li>
+                    {% if auction.image_link == "" %}
+                        No image to be displayed!
+                    {% else %}
+                        <img src="{{auction.image_link}}" alt="(error image link!)">
+                    {% endif %}
+                    </li>
+                </ul>
+            {% endfor %}
+        </ol>
+    {% else %}
+        Sorry, there are no items available in this category.
+    {% endif %}
 
 {% endblock %}

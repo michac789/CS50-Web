@@ -37,7 +37,11 @@
         <img src="{{auction.image_link}}" alt="(error image link!)"><br>
     {% endif %}
     Starting Bid: ${{auction.starting_bid}} <br>
-    Current Highest Bid: ${{highest_bid}} (from a total of {{total_bids}} bid(s) so far)<br>
+    {% if total_bids != 0 %}
+        Current Highest Bid: ${{highest_bid}} (from a total of {{total_bids}} bid(s) so far)<br>
+    {% else %}
+        Current Highest Bid: No bids made yet<br>
+    {% endif %}
     
     <!--Bid item / close bid / display winner-->
     {% if user.is_authenticated %}

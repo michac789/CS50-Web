@@ -178,19 +178,29 @@ def auction(request, auction_id):
     else:
         return render(request, "auctions/listingpage.html", {
             "auction": auction,
-            "comments": comments
+            "comments": comments,
+            "highest_bid": highest_bid,
+            "total_bids": total_bids
         })
 
 
 def display_categories(request):
+    if request.method == "POST":
+        input_category = request.POST["chosen_category"]
+        chosen_category = Categories.objects.get(name = input_category)
+        relevant_auctions = Auction.objects.filter(category = chosen_category)
+        result = 0
+        for auction in relevant_auctions:
+            result += 1
+    else:
+        relevant_auctions = None
+        result = -1
+        chosen_category = ""
     return render(request, "auctions/categories.html", {
-        "categories": Categories.objects.all()
-    })
-    
-    
-def view_category(request, category):
-    return render(request, "auctions/specific_category.html", {
-        
+        "categories": Categories.objects.all(),
+        "relevant_auctions": relevant_auctions,
+        "result": result,
+        "chosen_category": chosen_category
     })
 
 

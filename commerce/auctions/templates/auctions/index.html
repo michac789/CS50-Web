@@ -5,19 +5,19 @@
 
     <ol>
         {% for auction in auctions %}
-        <a href="{% url 'auction' auction.id %}"><li>{{auction.title}}</li></a>
-        <ul>
-            <li>Category: {{auction.category.name}}</li>
-            <li>Description: {{auction.description}}</li>
-            <li>Starting Bid: {{auction.starting_bid}}</li>
-            <li>
-            {% if auction.image_link == "" %}
-                No image to be displayed!
-            {% else %}
-                <img src="{{auction.image_link}}" alt="(error image link!)">
-            {% endif %}
-            </li>
-        </ul>
+            <a href="{% url 'auction' auction.id %}"><li>{{auction.title}}</li></a>
+            <ul>
+                <li>Category: {{auction.category.name}}</li>
+                <li>Description: {{auction.description}}</li>
+                <li>Starting Bid: {{auction.starting_bid}}</li>
+                <li>
+                {% if auction.image_link == "" %}
+                    No image to be displayed!
+                {% else %}
+                    <img src="{{auction.image_link}}" alt="(error image link!)">
+                {% endif %}
+                </li>
+            </ul>
         {% endfor %}
     </ol>
 {% endblock %}
