@@ -87,7 +87,7 @@ def createlisting_view(request):
         created = False
         if empty0 == False and empty1 == False and empty2 == False:
             created = True
-            Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category, image_link=image_link)
+            Auction.objects.create(title=title, description=description, starting_bid=starting_bid, owner=request.user, category=category, image_link=image_link, winner="")
         return render(request, "auctions/createlisting.html", {
             "categories": Categories.objects.all(),
             "created": created,
@@ -109,11 +109,18 @@ def auction(request, auction_id):
     auction = Auction.objects.get(id=auction_id)
     bids = Bid.objects.filter(item=auction)
     highest_bid = auction.starting_bid
+    total_bids = 0
     for bid in bids:
+        total_bids += 1
         if bid.price > highest_bid:
             highest_bid = bid.price
     if request.user.is_authenticated:
         user = User.objects.get(username=request.user)
+        user_bids = Bid.objects.filter(bidder=user, item=auction)
+        your_latest_bid = 0
+        for bid in user_bids:
+            if bid.price > your_latest_bid:
+                your_latest_bid = bid.price
         watchlist, error, added = False, False, False
         if user in auction.watchlist.all():
             watchlist = True
@@ -127,14 +134,6 @@ def auction(request, auction_id):
                 else:
                     auction.watchlist.remove(user)
                     watchlist = False
-                return render(request, "auctions/listingpage.html", {
-                    "added": added,
-                    "error": error,
-                    "auction": auction,
-                    "watchlist": watchlist,
-                    "bids": bids,
-                    "highest_bid": highest_bid
-                })
             # Handles bidding process
             elif request.POST.get('bid', False):
                 bidding = request.POST["bid"]
@@ -156,24 +155,20 @@ def auction(request, auction_id):
                         for bid in bids:
                             if bid.price > highest_bid:
                                 highest_bid = bid.price
-                return render(request, "auctions/listingpage.html", {
-                    "added": added,
-                    "error": error,
-                    "auction": auction,
-                    "watchlist": watchlist,
-                    "bids": bids,
-                    "highest_bid": highest_bid
-                })
+            # Handles closing bid
+            elif request.POST.get('close_bid', False):
+                auction.closed = True
             # TODO - Handles Comments
-        else:
-            return render(request, "auctions/listingpage.html", {
-                "added": added,
-                "error": error,
-                "auction": auction,
-                "watchlist": watchlist,
-                "bids": bids,
-                "highest_bid": highest_bid
-            })
+        return render(request, "auctions/listingpage.html", {
+            "added": added,
+            "error": error,
+            "auction": auction,
+            "watchlist": watchlist,
+            "bids": bids,
+            "highest_bid": highest_bid,
+            "your_latest_bid": your_latest_bid,
+            "total_bids": total_bids
+        })
     else:
         return render(request, "auctions/listingpage.html", {
             "auction": auction

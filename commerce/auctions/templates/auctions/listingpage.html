@@ -23,7 +23,12 @@
 
     <h5>Item description: </h5>
     <h6>{{auction.description}}</h6>
-    Listed By: {{auction.owner}} <br>
+    {% if auction.owner == user %}
+        Listed By: {{auction.owner}} <strong>(you)</strong><br>
+    {% else %}
+        Listed By: {{auction.owner}} <br>
+    {% endif %}
+    
     Category: {{auction.category.name}} <br>
     {% if auction.image_link == "" %}
         No image to be displayed!
@@ -31,32 +36,43 @@
         <img src="{{auction.image_link}}" alt="(error image link!)"><br>
     {% endif %}
     Starting Bid: ${{auction.starting_bid}} <br>
-    Current Highest Bid: ${{highest_bid}} <br>
+    Current Highest Bid: ${{highest_bid}} (from a total of {{total_bids}} bid(s) so far)<br>
     
     {% if user.is_authenticated %}
-        {% if error %}
-            <h6>Error! Bid is not added!<br>
-            Please enter a valid bid higher than the current highest bid!</h6>
+        {% if auction.owner == user %}
+            {% if auction.closed == False %}
+                Your listing is currently active. <br>
+                <form action="{% url 'auction' auction.id %}" method="post">
+                    {% csrf_token %}
+                    <button name="close_bid" value="close_bid">Close Bid</button>
+                </form>
+            {% else %}
+                Your listing has been closed.
+                {% if highest_bid != 0 %}
+                    The highest bid is ${{highest.bid}}, won by {{auction.winner}}
+                {% else %}
+                    The bid has been closed. No one won the bid.
+                {% endif %}
+            {% endif %}
+        {% else %}
+            {% if your_latest_bid == 0 %}
+                You have not bid this item yet.
+            {% else %}
+                Your Latest Bid: ${{your_latest_bid}} <br>
+            {% endif %}
+            <form action="{% url 'auction' auction.id %}" method="Post">
+                {% csrf_token %}
+                <input type="text" placeholder="Enter bid here" name="bid" maxlength=32 size=32>
+                <button type="submit">Place Bid</button>
+            </form>
         {% endif %}
-        {% if added %}
-            <h6>Bid added successfully!</h6>
-        {% endif %}
-        <form action="{% url 'auction' auction.id %}" method="Post">
-            {% csrf_token %}
-            <input type="text" placeholder="Enter bid here" name="bid" maxlength=32 size=32>
-            <button type="submit">Place Bid</button>
-        </form>
-
         {% for bid in bids %}
             {{bid}}
         {% endfor %}
-
-        <!--TODO (CLOSE AUCTION IF OWNER)-->
     {% else %}
         Please login to place bids.<br>
         If you are the owner of the listing, please login to close the auction.
     {% endif %}
-    
 
     
     <br>
