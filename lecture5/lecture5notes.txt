@@ -1,4 +1,4 @@
-Lecture 5 Notes
+Lecture 5 Notes - Javascript
 
 - Javascript Introduction
 Include script tags <script> [code] </script>
