@@ -1,3 +1,15 @@
 textarea {
     min-height: 400px;
 }
+
+#read_div {
+    background-color: grey;
+    margin: 2%;
+    padding: 1%;
+}
+
+#unread_div {
+    background-color: white;
+    margin: 2%;
+    padding: 1%;
+}

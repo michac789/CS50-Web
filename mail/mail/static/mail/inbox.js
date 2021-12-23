@@ -39,28 +39,40 @@ function load_mailbox(mailbox) {
   fetch(`/emails/${mailbox}`)
   .then(response => response.json())
   .then(emails => {
-      // Print emails
       console.log(emails);
       emails.forEach(email => {
-        console.log(email);
+        // Create new div for each email, showing the sender, subject and timestamp
         const sender = email.sender;
-        const recipients = email.recipients;
         const subject = email.subject;
-        const body = email.body;
         const timestamp = email.timestamp;
-        let read = email.read;
-        let archived = email.archived;
-        var newdiv = document.createElement('div');
-        newdiv.innerHTML = sender;
-        newdiv.append(recipients, subject, body, timestamp)
-        document.getElementById("emails-view").appendChild(newdiv);
+
+        var sender_html = document.createElement('h6');
+        sender_html.append("Sender: ", sender);
+        var subject_html = document.createElement('h5');
+        subject_html.append("Subject: ", subject);
+        var timestamp_html = document.createElement('h7');
+        timestamp_html.append("Timestamp: ", timestamp);
+        
+        var emaildiv = document.createElement('div');
+        emaildiv.setAttribute("id", "div1");
+        emaildiv.append(sender_html, subject_html, timestamp_html);
+
+        // Grey background for read emails, white otherwise
+        if (email.read === true){
+          console.log(`read`);
+          emaildiv.id = "read_div";
+        }
+        else{
+          console.log(`unread`);
+          emaildiv.id = "unread_div";
+        }
+        
+        // Append all the email div to the main html page
+        document.getElementById("emails-view").appendChild(emaildiv);
       })
-      //
-      
   });
 
   
-  // Query the API for the latest emails in that mailbox 
 
   // Display ???
 
