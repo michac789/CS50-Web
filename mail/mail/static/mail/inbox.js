@@ -8,6 +8,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // By default, load the inbox
   load_mailbox('inbox');
+
+  // Send mail when submit button in compose-view is pressed
+  document.querySelector('#compose-form').onsubmit = sent_email;
 });
 
 function compose_email() {
@@ -30,4 +33,36 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
+}
+
+// TODO - Send mail
+function sent_email() {
+
+  alert(`sendddd`);
+
+  // Getting in values for recipients, subject and body
+  const value_recipients = document.querySelector('#compose-recipients').value;
+  const value_subject = document.querySelector('#compose-subject').value;
+  const value_body = document.querySelector('#compose-body').value;
+
+  // Make POST request to /emails to send email
+  fetch('/emails', {
+    method: 'POST',
+    body: JSON.stringify({
+        recipients: value_recipients,
+        subject: value_subject,
+        body: value_body
+    })
+  })
+  .then(response => response.json())
+  .then(result => {
+      // Print result
+      console.log(result);
+  })
+  .catch(error => console.log(error));
+  localStorage.clear();
+
+  // Load the user's sent mailbox
+  load_mailbox('sent');
+  return false;
 }
