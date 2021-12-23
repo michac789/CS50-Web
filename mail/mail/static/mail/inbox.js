@@ -34,17 +34,42 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
-  }
 
+  // Make a GET request to /emails/<mailbox> to request email of particular mailbox
+  fetch(`/emails/${mailbox}`)
+  .then(response => response.json())
+  .then(emails => {
+      // Print emails
+      console.log(emails);
+      emails.forEach(email => {
+        console.log(email);
+        const sender = email.sender;
+        const recipients = email.recipients;
+        const subject = email.subject;
+        const body = email.body;
+        const timestamp = email.timestamp;
+        let read = email.read;
+        let archived = email.archived;
+        var newdiv = document.createElement('div');
+        newdiv.innerHTML = sender;
+        newdiv.append(recipients, subject, body, timestamp)
+        document.getElementById("emails-view").appendChild(newdiv);
+      })
+      //
+      
+  });
+
+  
   // Query the API for the latest emails in that mailbox 
 
   // Display ???
 
+  
+  }
+
 
 // TODO - Send mail
 function send_email() {
-
-  alert(`sendddd`);
 
   // Getting in values for recipients, subject and body
   const value_recipients = document.querySelector('#compose-recipients').value;
@@ -62,7 +87,6 @@ function send_email() {
   })
   .then(response => response.json())
   .then(result => {
-      // Print result
       console.log(result);
   })
   .catch(error => console.log(error));
