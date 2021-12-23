@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#inbox').addEventListener('click', () => load_mailbox('inbox'));
   document.querySelector('#sent').addEventListener('click', () => load_mailbox('sent'));
   document.querySelector('#archived').addEventListener('click', () => load_mailbox('archive'));
-  document.querySelector('#compose').addEventListener('click', compose_email);
+  document.querySelector('#compose').addEventListener('click', () => compose_email("", "", ""));
 
   // By default, load the inbox
   load_mailbox('inbox');
@@ -13,17 +13,17 @@ document.addEventListener('DOMContentLoaded', function() {
   document.querySelector('#compose-form').onsubmit = send_email;
 });
 
-function compose_email() {
+function compose_email(def_recipient, def_subject, def_body) {
+
+  // Assign default values (needed for reply feature, otherwise empty); Clear composition field
+  document.querySelector('#compose-recipients').value = def_recipient;
+  document.querySelector('#compose-subject').value = def_subject;
+  document.querySelector('#compose-body').value = def_body;
 
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
   document.querySelector('#mail-view').style.display = 'none';
-
-  // Clear out composition fields
-  document.querySelector('#compose-recipients').value = '';
-  document.querySelector('#compose-subject').value = '';
-  document.querySelector('#compose-body').value = '';
 }
 
 function load_mailbox(mailbox) {
@@ -150,6 +150,26 @@ function open_email(email_id, mailbox) {
           archive(email.id, email.archived)
         }
       }
+
+      // Reply to an email
+      if (mailbox === "inbox"){
+        const reply_button = document.createElement('button');
+        reply_button.innerHTML = "Reply Email";
+        reply_button.setAttribute("id", "reply");
+        document.getElementById("mail-view").append(reply_button);
+
+        var pre_recipient = email.sender;
+        var pre_subject = email.subject;
+        if (email.subject.substring(0, 4) != "Re: ")
+        {
+          pre_subject = `Re: ${email.subject}`;
+        }
+        var pre_body = `On ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+        
+        document.querySelector('#reply').onclick = () => {
+          compose_email(pre_recipient, pre_subject, pre_body)
+        }
+      }
   });
 
   // Mark the email is read using PUT request
@@ -175,3 +195,14 @@ function archive(email_id, archive_status) {
     })
   })
 }
+
+// TODO For Week 6:
+// Better div to represent email list; suitable for all screen sizes
+// Better UI to represent email's content and buttons
+// Add delay time when sending email
+// Notification saying email is sent
+// Archive feature better UI
+// Scrolling feature
+// Animation when putting emails in archive
+// Mouse hover color; better overall css
+// Add some React codes
