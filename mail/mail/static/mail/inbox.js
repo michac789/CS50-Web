@@ -11,9 +11,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Send mail when submit button in compose-view is pressed
   document.querySelector('#compose-form').onsubmit = send_email;
-
-  // Open mail when an email is pressed
-  //document.addEventListener()
 });
 
 function compose_email() {
@@ -49,6 +46,7 @@ function load_mailbox(mailbox) {
         const subject = email.subject;
         const timestamp = email.timestamp;
 
+        // TODO - FIX UI
         var sender_html = document.createElement('h6');
         sender_html.append("Sender: ", sender);
         var subject_html = document.createElement('h5');
@@ -56,9 +54,11 @@ function load_mailbox(mailbox) {
         var timestamp_html = document.createElement('h7');
         timestamp_html.append("Timestamp: ", timestamp);
         
-        var emaildiv = document.createElement('div');
-        emaildiv.setAttribute("id", email.id);
+        const emaildiv = document.createElement('div');
         emaildiv.append(sender_html, subject_html, timestamp_html);
+        emaildiv.addEventListener('click', () => {
+          open_email(email.id)
+        });
 
         // Grey background for read emails, white background otherwise
         if (email.read === true){
@@ -69,7 +69,7 @@ function load_mailbox(mailbox) {
         }
         
         // Append all the email div to the main html page
-        document.getElementById("emails-view").appendChild(emaildiv);
+        document.getElementById("emails-view").append(emaildiv);
       })
   });
 }
@@ -99,17 +99,21 @@ function send_email() {
   localStorage.clear();
 
   // Load the user's sent mailbox
+  //TODO - DELAY WHEN LOADING THE SENT TAB
   load_mailbox('sent');
   return false;
 }
 
-function open_email() {
-  fetch('/emails/100')
+function open_email(email_id) {
+  console.log("clicked")
+  console.log(email_id)
+  fetch(`/emails/${email_id}`)
   .then(response => response.json())
   .then(email => {
       // Print email
       console.log(email);
   
       // ... do something else with email ...
+
   });
 }
