@@ -26,7 +26,6 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
-// TODO - Load appropriate mailbox
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
@@ -57,7 +56,7 @@ function load_mailbox(mailbox) {
         const emaildiv = document.createElement('div');
         emaildiv.append(sender_html, subject_html, timestamp_html);
         emaildiv.addEventListener('click', () => {
-          open_email(email.id)
+          open_email(email.id, mailbox)
         });
 
         // Grey background for read emails, white background otherwise
@@ -74,7 +73,6 @@ function load_mailbox(mailbox) {
   });
 }
 
-// TODO - Send mail
 function send_email() {
 
   // Getting in values for recipients, subject and body
@@ -104,7 +102,7 @@ function send_email() {
   return false;
 }
 
-function open_email(email_id) {
+function open_email(email_id, mailbox) {
 
   // Show mail view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
@@ -135,8 +133,45 @@ function open_email(email_id) {
       emaildiv.setAttribute("class", "mail_view");
 
       document.getElementById("mail-view").append(emaildiv);
+
+      // Button to archive or unarchive for inbox & archived category
+      if (mailbox != "sent"){
+        const new_button = document.createElement('button');
+        if (email.archived === true){
+          new_button.innerHTML = "Unarchive";
+        } else {
+          new_button.innerHTML = "Archive";
+        }
+        new_button.setAttribute("id", "archive");
+        document.getElementById("mail-view").append(new_button);
+  
+        // Archive or unarchive when button is pressed
+        document.querySelector('#archive').onclick = () => {
+          archive(email.id, email.archived)
+        }
+      }
   });
 
-  // Mark that email is read
+  // Mark the email is read using PUT request
+  fetch(`/emails/${email_id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+        read: true
+    })
+  })
+}
 
+function archive(email_id, archive_status) {
+  // Archive or Unarchive email using PUT request
+  value = true;
+  if (archive_status){
+    value = false;
+  }
+  console.log(value)
+  fetch(`/emails/${email_id}`, {
+    method: 'PUT',
+    body: JSON.stringify({
+        archived: value
+    })
+  })
 }
