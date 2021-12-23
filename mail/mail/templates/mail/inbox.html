@@ -9,6 +9,7 @@
     <button class="btn btn-sm btn-outline-primary" id="sent">Sent</button>
     <button class="btn btn-sm btn-outline-primary" id="archived">Archived</button>
     <a class="btn btn-sm btn-outline-primary" href="{% url 'logout' %}">Log Out</a>
+    <div id="short_message">TODO - Display message here...</div>
     <hr>
 
     <div id="emails-view">
@@ -31,8 +32,8 @@
             <div class="form-group">
                 <input class="form-control" id="compose-subject" placeholder="Subject">
             </div>
-            <textarea class="form-control" id="compose-body" placeholder="Body"></textarea>
-            <input type="submit" class="btn btn-primary"/>
+            <textarea class="form-control" id="compose-body" placeholder="Body"></textarea><br>
+            <input type="submit" class="btn btn-primary" value="Send Email">
         </form>
     </div>
 {% endblock %}

@@ -42,17 +42,15 @@ function load_mailbox(mailbox) {
   .then(emails => {
       console.log(emails);
       emails.forEach(email => {
-        // Create new div with unique id for each email, showing the sender, subject and timestamp
-        let sender_html = document.createElement('h6');
-        sender_html.append("Sender: ", email.sender);
-        let subject_html = document.createElement('h5');
-        subject_html.append("Subject: ", email.subject);
-        let timestamp_html = document.createElement('h7');
-        timestamp_html.append("Timestamp: ", email.timestamp);
+        // Create some divs for each email's component, which is the sender, subject and timestamp
+        let sender_html = document.createElement('div');
+        let subject_html = document.createElement('div');
+        let timestamp_html = document.createElement('div');
+        sender_html.append(email.sender);
+        subject_html.append(email.subject);
+        timestamp_html.append(email.timestamp);
 
-        // TODO - FIX UI
-        
-        // ??
+        // One row div to display one single email, opening a particular mail when clicked
         const emaildiv = document.createElement('div');
         emaildiv.append(sender_html, subject_html, timestamp_html);
         emaildiv.addEventListener('click', () => {
@@ -96,9 +94,10 @@ function send_email() {
   .catch(error => console.log(error));
   localStorage.clear();
 
-  // Load the user's sent mailbox
-  //TODO - DELAY WHEN LOADING THE SENT TAB
-  load_mailbox('sent');
+  // Load the user's sent mailbox, short delay to ensure newly sent emails are loaded
+  setTimeout(() => {
+    load_mailbox('sent');
+  }, 1000);
   return false;
 }
 
