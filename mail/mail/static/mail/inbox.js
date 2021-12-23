@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
   load_mailbox('inbox');
 
   // Send mail when submit button in compose-view is pressed
-  document.querySelector('#compose-form').onsubmit = sent_email;
+  document.querySelector('#compose-form').onsubmit = send_email;
 });
 
 function compose_email() {
@@ -25,6 +25,7 @@ function compose_email() {
   document.querySelector('#compose-body').value = '';
 }
 
+// TODO - Load appropriate mailbox
 function load_mailbox(mailbox) {
   
   // Show the mailbox and hide other views
@@ -33,10 +34,15 @@ function load_mailbox(mailbox) {
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
-}
+  }
+
+  // Query the API for the latest emails in that mailbox 
+
+  // Display ???
+
 
 // TODO - Send mail
-function sent_email() {
+function send_email() {
 
   alert(`sendddd`);
 
