@@ -2,14 +2,15 @@ textarea {
     min-height: 400px;
 }
 
-#read_div {
+.read_div {
     background-color: grey;
-    margin: 2%;
-    padding: 1%;
 }
 
-#unread_div {
+.unread_div {
     background-color: white;
+}
+
+.email_div {
     margin: 2%;
     padding: 1%;
 }

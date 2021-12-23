@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Send mail when submit button in compose-view is pressed
   document.querySelector('#compose-form').onsubmit = send_email;
+
+  // Open mail when an email is pressed
+  //document.addEventListener()
 });
 
 function compose_email() {
@@ -41,7 +44,7 @@ function load_mailbox(mailbox) {
   .then(emails => {
       console.log(emails);
       emails.forEach(email => {
-        // Create new div for each email, showing the sender, subject and timestamp
+        // Create new div with unique id for each email, showing the sender, subject and timestamp
         const sender = email.sender;
         const subject = email.subject;
         const timestamp = email.timestamp;
@@ -54,17 +57,15 @@ function load_mailbox(mailbox) {
         timestamp_html.append("Timestamp: ", timestamp);
         
         var emaildiv = document.createElement('div');
-        emaildiv.setAttribute("id", "div1");
+        emaildiv.setAttribute("id", email.id);
         emaildiv.append(sender_html, subject_html, timestamp_html);
 
-        // Grey background for read emails, white otherwise
+        // Grey background for read emails, white background otherwise
         if (email.read === true){
-          console.log(`read`);
-          emaildiv.id = "read_div";
+          emaildiv.setAttribute("class", "read_div email_div");
         }
         else{
-          console.log(`unread`);
-          emaildiv.id = "unread_div";
+          emaildiv.setAttribute("class", "unread_div email_div");
         }
         
         // Append all the email div to the main html page
@@ -100,4 +101,15 @@ function send_email() {
   // Load the user's sent mailbox
   load_mailbox('sent');
   return false;
+}
+
+function open_email() {
+  fetch('/emails/100')
+  .then(response => response.json())
+  .then(email => {
+      // Print email
+      console.log(email);
+  
+      // ... do something else with email ...
+  });
 }
