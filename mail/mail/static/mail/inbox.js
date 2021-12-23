@@ -18,6 +18,7 @@ function compose_email() {
   // Show compose view and hide other views
   document.querySelector('#emails-view').style.display = 'none';
   document.querySelector('#compose-view').style.display = 'block';
+  document.querySelector('#mail-view').style.display = 'none';
 
   // Clear out composition fields
   document.querySelector('#compose-recipients').value = '';
@@ -31,6 +32,7 @@ function load_mailbox(mailbox) {
   // Show the mailbox and hide other views
   document.querySelector('#emails-view').style.display = 'block';
   document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#mail-view').style.display = 'none';
 
   // Show the mailbox name
   document.querySelector('#emails-view').innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
@@ -42,18 +44,16 @@ function load_mailbox(mailbox) {
       console.log(emails);
       emails.forEach(email => {
         // Create new div with unique id for each email, showing the sender, subject and timestamp
-        const sender = email.sender;
-        const subject = email.subject;
-        const timestamp = email.timestamp;
+        let sender_html = document.createElement('h6');
+        sender_html.append("Sender: ", email.sender);
+        let subject_html = document.createElement('h5');
+        subject_html.append("Subject: ", email.subject);
+        let timestamp_html = document.createElement('h7');
+        timestamp_html.append("Timestamp: ", email.timestamp);
 
         // TODO - FIX UI
-        var sender_html = document.createElement('h6');
-        sender_html.append("Sender: ", sender);
-        var subject_html = document.createElement('h5');
-        subject_html.append("Subject: ", subject);
-        var timestamp_html = document.createElement('h7');
-        timestamp_html.append("Timestamp: ", timestamp);
         
+        // ??
         const emaildiv = document.createElement('div');
         emaildiv.append(sender_html, subject_html, timestamp_html);
         emaildiv.addEventListener('click', () => {
@@ -105,15 +105,38 @@ function send_email() {
 }
 
 function open_email(email_id) {
-  console.log("clicked")
-  console.log(email_id)
+
+  // Show mail view and hide other views
+  document.querySelector('#emails-view').style.display = 'none';
+  document.querySelector('#compose-view').style.display = 'none';
+  document.querySelector('#mail-view').style.display = 'block';
+  document.getElementById("mail-view").innerHTML = "";
+
+  // Make a GET request to /emails/<email_id>
   fetch(`/emails/${email_id}`)
   .then(response => response.json())
   .then(email => {
-      // Print email
       console.log(email);
-  
-      // ... do something else with email ...
 
+      // Show email's sender, recipients, subject, timestamp, and body
+      let sender_html = document.createElement('div');
+      sender_html.append("Sender: ", email.sender);
+      let recipients_html = document.createElement('div');
+      recipients_html.append("Recipient: ", email.recipients);
+      let subject_html = document.createElement('div');
+      subject_html.append("Subject: ", email.subject);
+      let timestamp_html = document.createElement('div');
+      timestamp_html.append("Timestamp: ", email.timestamp);
+      let body_html = document.createElement('div');
+      body_html.append("Body: ", email.body);
+
+      const emaildiv = document.createElement('div');
+      emaildiv.append(sender_html, recipients_html, subject_html, timestamp_html, body_html);
+      emaildiv.setAttribute("class", "mail_view");
+
+      document.getElementById("mail-view").append(emaildiv);
   });
+
+  // Mark that email is read
+
 }
