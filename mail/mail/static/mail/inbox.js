@@ -71,14 +71,7 @@ function load_mailbox(mailbox) {
         document.getElementById("emails-view").appendChild(emaildiv);
       })
   });
-
-  
-
-  // Display ???
-
-  
-  }
-
+}
 
 // TODO - Send mail
 function send_email() {
