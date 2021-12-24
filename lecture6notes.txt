@@ -1,3 +1,33 @@
 Lecture 6 Notes - User Interfaces
 
 - Single Page Application
+> Dynamic Loading
+> History (manipulate url bar)
+> window.onpopstate (saving state, allow to go back in sessions)
+
+- Scroll
+> Window object: .innerWidth, .innerHeight, .scrollY, .offsetHeight, .onscroll
+> Infinite scrolling
+
+- Animation
+> @keyframes grow {from {font-size: 20px} to {font-size: 100px}}
+> ex: animation-name: grow; animation-duration: 2s; animation-fill-mode: forwards;
+animation-iteration-count: 2/infinite/..;
+
+- React
+> Declarative programming (not imperative programming)
+> Packages: React (jsx code), ReactDOM, Babel (convert jsx to js)
+> Ex (in body):
+<div id="app></div>
+<script type="text/babel>
+	function App() {
+		const x = 1;
+		const x = 2;
+		return( <div>Hello! {x+y}</div> );
+	}
+	ReactDOM.render(<App />, document.querySelector("#app"));
+</script>
+> Loop: <Hello name="foo"/>: display the return values of function Hello with an argument
+> const[count, setCount] = React.useState(0);
+> Use class object for having multiple state; React.useState
+> Spread operator (...)

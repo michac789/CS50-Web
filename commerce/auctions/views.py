@@ -204,7 +204,6 @@ def display_categories(request):
     })
 
 
-@login_required
 def watchlist(request):
     user = User.objects.get(username=request.user)
     return render(request, "auctions/watchlist.html", {
