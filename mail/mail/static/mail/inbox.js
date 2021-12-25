@@ -94,15 +94,13 @@ function send_email() {
   .catch(error => console.log(error));
   localStorage.clear();
 
-  document.querySelector("#short_message").innerHTML = `Sending email2...`;
-  console.log("can you see this??? 111");
+  let temp_div = createElement('div');
+  temp_div.innerHTML = "Sending email...";
+  temp_div.setAttribute("id", "sending_email");
+  // BUGGY document.querySelector("#space").innerHTML = temp_div;
 
   // Load the user's sent mailbox, short delay to ensure newly sent emails are loaded
-  setTimeout(() => {document.querySelector("#short_message").innerHTML = `Sending email3...`;}, 1000);
-  setTimeout(() => {console.log("hello at 5");}, 5000);
-  setTimeout(() => {
-    load_mailbox('sent');
-  }, 500);
+  setTimeout(() => {load_mailbox('sent');}, 1000);
   return false;
 }
 
@@ -128,8 +126,10 @@ function open_email(email_id, mailbox) {
         let new_div1 = document.createElement('div');
         let new_div2 = document.createElement('div');
         let row_div = document.createElement('div');
+        let bold_text = document.createElement('strong');
         row_div.setAttribute("class", "email_open_div");
-        new_div1.append(elements1[i]);
+        bold_text.append(elements1[i]);
+        new_div1.append(bold_text);
         new_div2.append(elements2[i]);
         row_div.append(new_div1, new_div2);
         emaildiv.append(row_div);
@@ -158,6 +158,7 @@ function open_email(email_id, mailbox) {
 
       // Button to archive or unarchive for inbox & archived category
       if (mailbox != "sent"){
+        document.getElementById("mail-view").append("  ")
         const new_button = document.createElement('button');
         if (email.archived === true){
           new_button.innerHTML = "Unarchive";

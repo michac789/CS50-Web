@@ -34,6 +34,27 @@ textarea {
     margin: 0.5%;
 }
 
-#reply {
-    color: rgb(77, 0, 66);
+#reply:hover {
+    color: rgb(161, 5, 138);
+    border-color: rgb(161, 5, 138);
+}
+
+#archive:hover {
+    color: rgb(13, 112, 0);
+    border-color: rgb(13, 112, 0);
+}
+
+@keyframes move {
+    from {
+        left: 0%;
+    }
+    to  {
+        left: 50%;
+    }
+}
+#sending_email {
+    position: relative;
+    animation-name: move;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
 }
