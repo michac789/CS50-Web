@@ -3,7 +3,7 @@ textarea {
 }
 
 .read_div > div {
-    background-color: rgb(200, 200, 200);
+    background-color: rgb(210, 210, 210);
     padding: 1.5%;
 }
 
@@ -23,5 +23,17 @@ textarea {
 }
 
 .email_div:hover {
-    background-color:red;
+    background-color:blue;
+}
+
+.email_open_div {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-gap: 2px;
+    padding: 0.2%;
+    margin: 0.5%;
+}
+
+#reply {
+    color: rgb(77, 0, 66);
 }

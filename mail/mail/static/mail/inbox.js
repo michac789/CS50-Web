@@ -94,10 +94,15 @@ function send_email() {
   .catch(error => console.log(error));
   localStorage.clear();
 
+  document.querySelector("#short_message").innerHTML = `Sending email2...`;
+  console.log("can you see this??? 111");
+
   // Load the user's sent mailbox, short delay to ensure newly sent emails are loaded
+  setTimeout(() => {document.querySelector("#short_message").innerHTML = `Sending email3...`;}, 1000);
+  setTimeout(() => {console.log("hello at 5");}, 5000);
   setTimeout(() => {
     load_mailbox('sent');
-  }, 1000);
+  }, 500);
   return false;
 }
 
@@ -115,42 +120,23 @@ function open_email(email_id, mailbox) {
   .then(email => {
       console.log(email);
 
-      // Show email's sender, recipients, subject, timestamp, and body
-      let sender_html = document.createElement('div');
-      sender_html.append("Sender: ", email.sender);
-      let recipients_html = document.createElement('div');
-      recipients_html.append("Recipient: ", email.recipients);
-      let subject_html = document.createElement('div');
-      subject_html.append("Subject: ", email.subject);
-      let timestamp_html = document.createElement('div');
-      timestamp_html.append("Timestamp: ", email.timestamp);
-      let body_html = document.createElement('div');
-      body_html.append("Body: ", email.body);
-
+      // Show email's sender, recipients, subject, timestamp
+      elements1 = ["Sender:", "Recipient:", "Subject:", "Timestamp:"];
+      elements2 = [email.sender, email.recipients, email.subject, email.timestamp];
       const emaildiv = document.createElement('div');
-      emaildiv.append(sender_html, recipients_html, subject_html, timestamp_html, body_html);
-      emaildiv.setAttribute("class", "mail_view");
-
+      for (let i = 0; i < 4; i++){
+        let new_div1 = document.createElement('div');
+        let new_div2 = document.createElement('div');
+        let row_div = document.createElement('div');
+        row_div.setAttribute("class", "email_open_div");
+        new_div1.append(elements1[i]);
+        new_div2.append(elements2[i]);
+        row_div.append(new_div1, new_div2);
+        emaildiv.append(row_div);
+      }
       document.getElementById("mail-view").append(emaildiv);
 
-      // Button to archive or unarchive for inbox & archived category
-      if (mailbox != "sent"){
-        const new_button = document.createElement('button');
-        if (email.archived === true){
-          new_button.innerHTML = "Unarchive";
-        } else {
-          new_button.innerHTML = "Archive";
-        }
-        new_button.setAttribute("id", "archive");
-        document.getElementById("mail-view").append(new_button);
-  
-        // Archive or unarchive when button is pressed
-        document.querySelector('#archive').onclick = () => {
-          archive(email.id, email.archived)
-        }
-      }
-
-      // Reply to an email
+      // Button to reply an email
       if (mailbox === "inbox"){
         const reply_button = document.createElement('button');
         reply_button.innerHTML = "Reply Email";
@@ -169,6 +155,30 @@ function open_email(email_id, mailbox) {
           compose_email(pre_recipient, pre_subject, pre_body)
         }
       }
+
+      // Button to archive or unarchive for inbox & archived category
+      if (mailbox != "sent"){
+        const new_button = document.createElement('button');
+        if (email.archived === true){
+          new_button.innerHTML = "Unarchive";
+        } else {
+          new_button.innerHTML = "Archive";
+        }
+        new_button.setAttribute("id", "archive");
+        document.getElementById("mail-view").append(new_button);
+
+        // Archive or unarchive when button is pressed
+        document.querySelector('#archive').onclick = () => {
+          archive(email.id, email.archived)
+        }
+      }
+
+      // Show email's body (content)
+      let horizontal_line = document.createElement('hr');
+      document.getElementById("mail-view").append(horizontal_line);
+      let body_html = document.createElement('div');
+      body_html.append(email.body);
+      document.getElementById("mail-view").append(body_html);
   });
 
   // Mark the email is read using PUT request
@@ -196,9 +206,6 @@ function archive(email_id, archive_status) {
 }
 
 // TODO For Week 6:
-// Better div to represent email list; suitable for all screen sizes
-// Better UI to represent email's content and buttons
-// Add delay time when sending email
 // Notification saying email is sent
 // Archive feature better UI
 // Scrolling feature
