@@ -1,0 +1,35 @@
+Lecture 7 Notes - Testing, CI/CD
+
+- Testing
+> assert (in python)
+> unit testing (unittest library)
+import unittest
+from file_name import function_name
+class Tests(unittest.Testcase):
+	def test1(self):
+		<check>
+		self.assertFalse(..)
+> Django testing
+create models (for testing), then create test functions and assert
+ex: test that certain function gives the correct output
+ex: c = Client(); response = c.get(".."); self.assertEqual(..)
+*response.statuscode, response.context[".."].count()
+assert(Equal/NotEqual/True/False/In/NotIn)
+
+- Selenium (Browser testing)
+from selenium import webdriver
+driver = webdriver.Chrome() -> using code to control how user interact with the browser
+on interpreter: from tests import *
+uri = file_uri("counter.html")
+driver.get(uri)
+driver.title -> print the title
+increase = driver.find_element_by_id("increase") -> looking for increase button, store in a var
+increase.click() -> simulate the user clicking the button
+
+- CI/CD (continuous integration/continuous development)
+CI: frequent merges to main branch, automated unit testing
+CD: short release schedules
+> Github Actions: YAML (key value pairs file; .yml format)
+> Docker (container): create dockerfile (see src7)
+docker ps
+docker exec -it <container id> bash -l
