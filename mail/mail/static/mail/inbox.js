@@ -149,7 +149,7 @@ function open_email(email_id, mailbox) {
         {
           pre_subject = `Re: ${email.subject}`;
         }
-        var pre_body = `On ${email.timestamp} ${email.sender} wrote: ${email.body}`;
+        var pre_body = `On ${email.timestamp} ${email.sender} wrote: "${email.body}"\n`;
         
         document.querySelector('#reply').onclick = () => {
           compose_email(pre_recipient, pre_subject, pre_body)
@@ -167,9 +167,9 @@ function open_email(email_id, mailbox) {
         new_button.setAttribute("id", "archive");
         document.getElementById("mail-view").append(new_button);
 
-        // Archive or unarchive when button is pressed
+        // Archive or unarchive when button is pressed & reload mailbox
         document.querySelector('#archive').onclick = () => {
-          archive(email.id, email.archived)
+          archive(email.id, email.archived, mailbox)
         }
       }
 
@@ -190,7 +190,7 @@ function open_email(email_id, mailbox) {
   })
 }
 
-function archive(email_id, archive_status) {
+function archive(email_id, archive_status, mailbox) {
   // Archive or Unarchive email using PUT request
   value = true;
   if (archive_status){
@@ -203,12 +203,11 @@ function archive(email_id, archive_status) {
         archived: value
     })
   })
+  setTimeout(() => {open_email(email_id, mailbox);}, 500);
 }
 
 // TODO For Week 6:
 // Notification saying email is sent
-// Archive feature better UI
 // Scrolling feature
 // Animation when putting emails in archive
 // Mouse hover color; better overall css
-// Add some React codes
