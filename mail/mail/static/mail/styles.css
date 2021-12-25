@@ -44,7 +44,7 @@ textarea {
     border-color: rgb(13, 112, 0);
 }
 
-@keyframes move {
+/* @keyframes move {
     from {
         left: 0%;
     }
@@ -57,4 +57,4 @@ textarea {
     animation-name: move;
     animation-duration: 1s;
     animation-fill-mode: forwards;
-}
+} */

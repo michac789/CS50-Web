@@ -207,6 +207,6 @@ function archive(email_id, archive_status, mailbox) {
 }
 
 // Possible improvements:
-// Notify the user that email is not sent if recipient is invalid
-// Scrolling feature
-// Animation when putting emails in archive
+// - Notify the user that email is not sent if recipient is invalid
+// - Scrolling feature, dynamic loading
+// - Animation when putting emails in archive
