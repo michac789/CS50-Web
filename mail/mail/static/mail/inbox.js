@@ -78,6 +78,12 @@ function send_email() {
   const value_subject = document.querySelector('#compose-subject').value;
   const value_body = document.querySelector('#compose-body').value;
 
+  if (value_recipients === ""){
+    alert("Invalid recipient! Please retry again!");
+    compose_email("", "", "");
+    return false;
+  }
+
   // Make POST request to /emails to send email
   fetch('/emails', {
     method: 'POST',
@@ -88,9 +94,7 @@ function send_email() {
     })
   })
   .then(response => response.json())
-  .then(result => {
-      console.log(result);
-  })
+  .then(result => {console.log(result);})
   .catch(error => console.log(error));
   localStorage.clear();
 
@@ -202,7 +206,7 @@ function archive(email_id, archive_status, mailbox) {
   setTimeout(() => {open_email(email_id, mailbox);}, 400);
 }
 
-// TODO For Week 6:
-// Email empty??
+// Possible improvements:
+// Notify the user that email is not sent if recipient is invalid
 // Scrolling feature
 // Animation when putting emails in archive
