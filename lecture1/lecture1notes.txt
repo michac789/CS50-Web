@@ -1,0 +1,9 @@
+Submitting CS50 using GIT:
+
+git init
+git checkout -b <branch name>
+git status
+git add <file name>
+git commit -am <commit name>
+git remote add origin <place>
+git push origin --all
