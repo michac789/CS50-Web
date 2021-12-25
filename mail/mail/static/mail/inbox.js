@@ -94,13 +94,8 @@ function send_email() {
   .catch(error => console.log(error));
   localStorage.clear();
 
-  let temp_div = createElement('div');
-  temp_div.innerHTML = "Sending email...";
-  temp_div.setAttribute("id", "sending_email");
-  // BUGGY document.querySelector("#space").innerHTML = temp_div;
-
   // Load the user's sent mailbox, short delay to ensure newly sent emails are loaded
-  setTimeout(() => {load_mailbox('sent');}, 1000);
+  setTimeout(() => {load_mailbox('sent');}, 500);
   return false;
 }
 
@@ -204,11 +199,10 @@ function archive(email_id, archive_status, mailbox) {
         archived: value
     })
   })
-  setTimeout(() => {open_email(email_id, mailbox);}, 500);
+  setTimeout(() => {open_email(email_id, mailbox);}, 400);
 }
 
 // TODO For Week 6:
-// Notification saying email is sent
+// Email empty??
 // Scrolling feature
 // Animation when putting emails in archive
-// Mouse hover color; better overall css
