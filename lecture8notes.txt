@@ -1,0 +1,34 @@
+Lecture 8 Notes - Scalability & Security
+
+- Scalability: 
+Server: takes incoming web request and response to it, but only limited user
+> servers can be in the cloud (3rd party) or on premise
+> benchmarking: analysis how many users a server can handle at any given time (ex: benchmarking API)
+> horizontal scaling (with load balancer) & vertical scaling
+> load balancing methods: random choice, round robin, fewest connections, ..
+> session-aware load balancing: sticky sessions, sessions in database, client-side sessions, ..
+> autoscaling: add active servers based on number of users
+> scaling databases: vertically (split one table into multiple tables)
+> database replication: single-primary replication, multi-primary replication 
+> multi replication conflict: update, uniqueness, delete
+> caching: locally save information in the web browser (for some seconds / using ETag version)
+> server-side cache: per-view caching, template fragment caching, low-level cache api
+
+- Security:
+> open-source software: be careful not leaking creditential in git versions
+> phising html attack: linking to unwanted sites
+> http and https: protocols when sending data across the internet
+> secret-key cryptography: generate ciphertext and decrypting
+> public-key cryptography: use public key & private key;
+receiver send public key, converted to cipherback then send back to receiver (private key)
+> how sql/databases store password: using hash function to store hashed values
+(hash function: one-way conversion only)
+> sql injection: enter username: hacker"--
+> APIs: rate limiting, route authentication
+> Javascript: (xss; cross-site scripting)
+> cross-site request forgery (csrf token): prevent to forge a post request
+
+- What's next?
+> Server-side web frameworks: Express.js, Ruby on Rails, ...
+> Client-side web frameworks: AngularJS, React, Vue.js, ...
+> Deploying websites: AWS, Github Pages, Google Cloud, Heroku, Microsoft Azure, ...
