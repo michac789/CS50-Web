@@ -1,0 +1,25 @@
+--- HTML, CSS ---
+
+- HTML
+> HTML5 basic notations, Document Object Model (DOM) basic structure
+> Headings (h1), list (ol, ul, li), image (img), anchor/link (a), table (table, thead, th, tbody, tr, td)
+> Form (input, options, submit)
+
+- CSS
+> CSS3; adding styles: attributes, style element in header, reference to external file
+> CSS Selectors (reference through element, class, id), div (margin, border, padding),
+> (a, b), descendant (a b), child (a > b), (a + b), attribute ([a=b]), pseudoclass (a:b), pseudoelement (a::b)
+> Specificity (inline > id > class > type)
+
+- Responsive Design
+> Viewport: <meta name="viewport" content="width=device-width, initial-scale=1.0">
+> Media Queries (@media), CSS (grid, flexbox)
+> Bootstrap library
+
+- SASS
+extension to CSS, allow us to have variables, nest css selectors, inheritance, etc
+> use '$' to indicate a variable on top of the file; ex: $color: red;
+> sass <filename>.scss:<filename>.css (compilation from scss to css, only reference to css from html)
+> sass -watch <filename>.scss:<filename>.css (automated monitoring without the need of manual compilation)
+> nesting css selectors; ex: div { .. p{..} ul{..}} (see source code)
+> inheritance class in sass; %<css_selector> {...}; @extend %<css_selector>
