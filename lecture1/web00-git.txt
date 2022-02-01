@@ -1,0 +1,32 @@
+CSCI S-33a Topic 0: Git
+
+- Topic Overview
+0. Git
+1. HTML, CSS
+2. Flask
+3. SQL
+4. ORMs, APIs
+5. Javascript
+6. Front Ends
+7. Django
+8. Testing, CI/CD
+9. Github, Travis CI
+10. Scability
+11. Security
+
+- Git Basic Commands
+git clone <url>: retrieve an entire repository
+git status: show modified files in working directory, staged for next commit
+git add <file>: add file to your next commit, use '*' to add all files
+git commit -m '<message>': commit your staged content
+git push: merch a remote branch into current branch
+git pull: fetch and merge commits from the tracking remote branch
+git reset <file>: unstage a file, or 'git reset --hard <commit>' to rewrite from that commit
+git log: show all commit logs
+git --help: show list of common usable comments
+
+- Basic HTML and CSS
+<refer to lecture0notes from CS50 Web 2021, very similar content on basic html and css>
+
+- Github Pages
+go to settings > scroll to github pages > deploy from a branch
