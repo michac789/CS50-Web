@@ -25,8 +25,24 @@ git reset <file>: unstage a file, or 'git reset --hard <commit>' to rewrite from
 git log: show all commit logs
 git --help: show list of common usable comments
 
-- Basic HTML and CSS
-<refer to lecture0notes from CS50 Web 2021, very similar content on basic html and css>
-
 - Github Pages
 go to settings > scroll to github pages > deploy from a branch
+allow us to deploy website from a branch through github
+
+- Git Branch
+'HEAD' points to the current branch we are working
+branching allows several features or bug fixes to be develop seperately and merged later
+git branch: show all the branches in the repository
+git branch <branch_name>: create a new branch
+git checkout <branch_name>: switch to another branch
+git merge <branch_name>: do it in main branch, merge a branch to main
+
+- Git Remote
+a version of a repository that exits somewhere else (such as on github)
+git fetch: download the latest commits from a remote
+git pull: simplified command of fetch & merge
+
+- Git Pull
+Fork: create a version from a repository
+Pull request: bring the changes from a branch to another branch (usually main)
+enable review of changes and adding of comments
