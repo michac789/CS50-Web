@@ -1,0 +1,7 @@
+Postgresql
+
+
+psql <database>
+\d: schema
+constraints: NOT NULL, UNIQUE, PRIMARY KEY, DEFAULT, CHECK
+INSERT INTO <table> (<column>) VALUES (<value>)
