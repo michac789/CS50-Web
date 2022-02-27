@@ -1,0 +1,10 @@
+Flask (Week 9 CS50x)
+
+- Flask File Conventions
+Route: /route?key=value&..
+app.py
+requirements.txt
+static/
+templates/
+
+code app.py
