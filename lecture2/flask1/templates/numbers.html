@@ -1,0 +1,19 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h3>Loop Numbers</h3>
+    <form action="{{ url_for('numbers') }}" method="get">
+        <input type="number" name="num" placeholder="enter a positive integer" min=1 max=100>
+        <button type="submit">Loop</button>
+    </form>
+    {% if length == 0 %} 
+        No input yet.
+    {% else %}
+        Looping...
+    {% endif %}
+    <ul>
+        {% for number in numbers %}
+        <li>{{number}}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

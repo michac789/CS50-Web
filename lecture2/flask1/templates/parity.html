@@ -1,0 +1,21 @@
+{% extends 'layout.html' %}
+
+{% block body %}
+    <h3>Check Parity</h3>
+    <form action="{{ url_for('parity') }}" method="get">
+        <input type="number" name="num" placeholder="enter an integer">
+        <button type="submit" value="submit">Submit</button>
+    </form>
+    {% if input %}
+        Your previous input was {{number}}.
+        {% if number % 2 == 0 %}
+            It is an EVEN number.
+        {% elif number % 2 == 1 %}
+            It is an ODD number.
+        {% else %}
+            Invalid input.
+        {% endif %}
+    {% else %}
+        No input detected yet.
+    {% endif %}
+{% endblock %}
