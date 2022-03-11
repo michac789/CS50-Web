@@ -7,7 +7,6 @@ Flask 1: Jinja2 Conditional & Loop
 - Jinja2 conditional (if, elif, else)
 - Jinja2 loop (for)
 """
-
 from flask import Flask, render_template, request
 
 app = Flask(__name__)

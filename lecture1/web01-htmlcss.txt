@@ -1,4 +1,0 @@
-CSCI S-33a Topic 1: HTML, CSS
-
-- Basic HTML and CSS
-<refer to lecture0notes from CS50 Web 2021, very similar content on basic html and css>
