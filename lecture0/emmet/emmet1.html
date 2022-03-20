@@ -1,0 +1,56 @@
+<!--
+    Emmet 1: Loop, Nesting
+
+    - Fill tag with content (use {})
+    Ex: h1{text}
+    - Creating multiple elements (use *)
+    Ex: h5*5
+    - Incrementing in loop
+    Ex: div*3{div no $}
+    - Create child elements
+    Ex: div.purple>span.cyan
+    - Create sibling elements
+    Ex: header+main+footer
+    - Grouping emmets
+    Ex: (header>nav)+main+footer
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>some paragraph</p>
+    <!-- p{some paragraph} -->
+    <h4>some text</h4>
+    <h4>some text</h4>
+    <h4>some text</h4>
+    <!-- h4*3{some text} -->
+    <form action="http://www.google.com" method="get"><button type="submit">Go to Google</button></form>
+    <!-- form:get[action="http://www.google.com"]>button:submit{Go to Google} -->
+    <nav>
+        <ol>
+            <li class="class-1">List Item 001</li>
+            <li class="class-2">List Item 002</li>
+            <li class="class-3">List Item 003</li>
+            <li class="class-4">List Item 004</li>
+            <li class="class-5">List Item 005</li>
+        </ol>
+    </nav>
+    <!-- nav>ol>li*5.class-${List Item $$$} -->
+    <header>
+        <nav></nav>
+    </header>
+    <main>
+        <p id="special">para1</p>
+        <p id="special">para2</p>
+        <p id="special">para3</p>
+    </main>
+    <footer class="foot"></footer>
+    <!-- header>nav^(main>p*3{para$}#special)+footer.foot -->
+</body>
+</html>
