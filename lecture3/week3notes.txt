@@ -1,0 +1,18 @@
+HTTP (Hyper Text Transfer Protocol)
+Create a request and server will respond
+HTTP Status Codes
+200: OK
+301: moved permanenetly
+403: forbidden
+404: not found
+500: internal server error
+
+Django: Web Framework
+django-admin startproject <name>
+cd to <name>, then
+python manage.py runserver
+python manage.py startapp <appname>
+You gain these precreated files:
+manage.py: execute commands, usually no need to touch
+settings.py: important configuration, preloaded with default settings
+urls.py: table of contents of all urls
