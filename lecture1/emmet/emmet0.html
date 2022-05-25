@@ -1,0 +1,44 @@
+<!--
+    Emmet 0: Introduction
+
+    Emmet is a plugin in vs code that helps us to efficiently write
+    html and css using clever shortcuts.
+    Starter: Type '!' to automatically generate below boiler html
+    
+    Type the name of the tag to automatically generate open/close tag
+    Try: button, h1, a, span, ...
+    You can do: <tag>.(class1).(class2)#(id)
+    *If you don't specify the tag, it's assumed you want to use div
+
+    Creating a tag with some attributes:
+    button[type="button"]
+    [data-selected]
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .purple{
+            color: purple;
+        }
+        .huge{
+            font-size: large;
+        }
+        #special{
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <h1>Big Heading</h1> <!-- h1 -->
+    <a href="www.google.com">google</a> <!-- a[href="www.google.com"]{google} -->
+    <div class="purple huge" id="special">A Div</div> <!-- .purple.huge#id -->
+    <span class="purple">Span Text </span>Other Text <!-- span.purple -->
+    <button type="submit">submit</button> <!-- button[type="submit"] -->
+</body>
+</html>
