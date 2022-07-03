@@ -1,5 +1,8 @@
 CSCI S-33a Topic 0: Git
 
+git branch -d <localbranch>
+git push <remote> --delete <branch>
+
 - Topic Overview
 0. Git
 1. HTML, CSS
