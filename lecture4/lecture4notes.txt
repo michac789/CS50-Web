@@ -12,10 +12,13 @@ Get Data: SELECT <c1,c2,..> FROM <tablename> WHERE <condition> ORDER BY <order>
 *Display nicely: .mode columns; .headers yes
 Update Data: UPDATE <tablename> SET <c1>=<v1>,.. WHERE <predicate>
 Delete Data: UPDATE <tablename> WHERE <predicate>
+*Launch by: sqlite3 <filename.sql>
 *Other clauses: LIMIT, ORDER BY, GROUP BY, HAVING
 *Foreign keys
 *CREATE INDEX name_index ON passangers(last)
 *SQL Injection Attack
+*Race conditions
+*SQLAlchemy
 
 ++ Migrations ++
 - models.py; create class
@@ -38,6 +41,21 @@ Delete Data: UPDATE <tablename> WHERE <predicate>
 > models.CharField(max_length="--")
 > models.ManyToManyField(..)
 > Airports.objects.filter(city="New York")
+
+++ Django Model ++
+- Creating model object in Django:
+*refer to models.py
+> python manage.py makemigrations: generate instruction
+> python manage.py migrate: apply the migration
+- Enter Django shell:
+> python manage.py shell
+- Python command examples:
+> f = Flight(origin="..", destination="..")
+> f.save()
+> flights = Flights.objects.all()
+> flight = flights.first()
+> flight.id
+> Airport.objects.filter(city="..).first() *alt: get
 
 ++ Django Admin ++
 - inside admin.py,
